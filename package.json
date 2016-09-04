@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/MagicCube/magic-homekit-server/issues"
   },
-  "homepage": "https://github.com/MagicCube/magic-homekit-server#readme"
+  "homepage": "https://github.com/MagicCube/magic-homekit-server#readme",
+  "devDependencies": {
+    "mongodb": "^2.2.9",
+    "request": "^2.74.0"
+  }
 }
