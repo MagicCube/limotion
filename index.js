@@ -1,7 +1,7 @@
 import logger from "winston";
 
-import ClientPushSensor from "./lib/sensor/ClientPushSensor";
-import ServerPullSensor from "./lib/sensor/ServerPullSensor";
+import HttpClientPushSensor from "./lib/sensor/http/HttpClientPushSensor";
+import HttpServerPullSensor from "./lib/sensor/http/HttpServerPullSensor";
 
 import server from "./lib/server";
 
@@ -68,17 +68,17 @@ async function setupSensors()
         let sensor = null;
         try
         {
-            if (s.monitor.mode === "server-pull")
+            if (s.monitor.mode === "http-server-pull")
             {
-                sensor = new ServerPullSensor(s);
+                sensor = new HttpServerPullSensor(s);
             }
-            else if (s.monitor.mode === "client-push")
+            else if (s.monitor.mode === "http-client-push")
             {
-                sensor = new ClientPushSensor(s);
+                sensor = new HttpClientPushSensor(s);
             }
             else
             {
-                throw new Error(`"${s.monitor.mode}" is not a supported sensor monitor mode. Try "server-pull" or "client-push".`);
+                throw new Error(`"${s.monitor.mode}" is not a supported sensor monitor mode. Try "http-server-pull" or "http-client-push".`);
             }
         }
         catch (err)
@@ -98,7 +98,10 @@ async function setupSensors()
             throw new Error(`Error ocurs when binding SensorStorage to sensor "${s.name}".`);
         }
 
-        sensor.startMonitor();
+        if (sensor.startMonitor)
+        {
+            sensor.startMonitor();
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 export default [
     {
+        id: "dht11-living-room",
         name: "DHT11 in Living Room",
         desc: "A DHT11 sensor in my living room connected with WiFi via ESP8266, powered by USB connector.",
         meta: {
@@ -20,7 +21,7 @@ export default [
         },
         monitor: {
             interval: 60 * 1000,
-            mode: "server-pull",
+            mode: "http-client-push",
             url: "http://192.168.2.119/dht11"
         },
         storage: {
