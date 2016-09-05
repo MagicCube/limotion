@@ -3,6 +3,8 @@ import logger from "winston";
 import ClientPushSensor from "./lib/sensor/ClientPushSensor";
 import ServerPullSensor from "./lib/sensor/ServerPullSensor";
 
+import server from "./lib/server";
+
 import config from "./config";
 import sensors from "./sensors";
 
@@ -14,6 +16,8 @@ async function startup()
 
     setupLogger();
     logger.info("MaigcHomekit server is now starting...");
+
+    server.setup();
 
     await setupStorage();
 
