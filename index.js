@@ -12,17 +12,17 @@ let storage = null;
 
 async function startup()
 {
-    line(); console.log("* Hello from MaigcHomekit *"); line();
+    line(); console.log("* Hello from Limotion *"); line();
 
     setupLogger();
-    logger.info("MaigcHomekit server is now starting...");
+    logger.info("Limotion server is now starting...");
 
     server.setup();
 
     await setupStorage();
 
     await setupSensors();
-    line(); logger.info("Congratulations! MaigcHomekit is now running.");
+    line(); logger.info("Congratulations! Limotion server is now running.");
 }
 
 function setupLogger()
