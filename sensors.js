@@ -20,7 +20,8 @@ export default [
         },
         monitor: {
             interval: 60 * 1000,
-            url: "http://localhost:1919/dht11"
+            mode: "server-pull",
+            url: "http://192.168.2.119/dht11"
         },
         storage: {
             collection: {

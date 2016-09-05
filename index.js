@@ -1,6 +1,7 @@
 import logger from "winston";
 
-import Sensor from "./lib/sensor/Sensor";
+import ClientPushSensor from "./lib/sensor/ClientPushSensor";
+import ServerPullSensor from "./lib/sensor/ServerPullSensor";
 
 import config from "./config";
 import sensors from "./sensors";
@@ -63,7 +64,18 @@ async function setupSensors()
         let sensor = null;
         try
         {
-            sensor = new Sensor(s);
+            if (s.monitor.mode === "server-pull")
+            {
+                sensor = new ServerPullSensor(s);
+            }
+            else if (s.monitor.mode === "client-push")
+            {
+                sensor = new ClientPushSensor(s);
+            }
+            else
+            {
+                throw new Error(`"${s.monitor.mode}" is not a supported sensor monitor mode. Try "server-pull" or "client-push".`);
+            }
         }
         catch (err)
         {
