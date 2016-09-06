@@ -11,6 +11,9 @@
 <body>
 <div id="chart"></div>
 <script>
+const from = new Date("2016-09-06 10:00");
+const   to = new Date("2016-09-06 22:00");
+
 var chart = c3.generate({
     bindto: '#chart',
     data: {
@@ -21,8 +24,10 @@ var chart = c3.generate({
         x: {
             type: 'timeseries',
             tick: {
-                format: x => x.toTimeString().substr(0, 5)
-            }
+                format: x => x.toTimeString().substr(0, 5),
+                count: 24 + 1
+            },
+            padding: 0
         },
         y: {
             label: "Temperature",
@@ -51,9 +56,6 @@ var chart = c3.generate({
     }
 });
 
-
-const from = new Date("2016-09-06 10:00");
-const   to = new Date("2016-09-06 22:00");
 $.ajax({
     url: "/api/sensor/dht11-living-room/data",
     data: {
