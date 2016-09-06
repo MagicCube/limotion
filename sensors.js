@@ -21,7 +21,7 @@ export default [
         },
         monitor: {
             interval: 60 * 1000,
-            mode: "http-client-push",
+            mode: "http-server-pull",
             url: "http://192.168.2.119/dht11"
         },
         storage: {
