@@ -1,28 +1,34 @@
 import logger from "winston";
 
-import HttpClientPushSensor from "./lib/sensor/http/HttpClientPushSensor";
-import HttpServerPullSensor from "./lib/sensor/http/HttpServerPullSensor";
-
 import server from "./lib/server";
+import sensors from "./lib/sensors";
 
-import config from "./config";
-import sensors from "./sensors";
-
-let storage = null;
+const config = require("./config");
 
 async function startup()
 {
-    line(); console.log("* Hello from Limotion *"); line();
+    printStarLine();
+    console.log("* Hello from Limotion *");
+    printStarLine();
+    console.log("Limotion server is now starting...");
 
+    await prepare();
+
+    printStarLine();
+    logger.info("Congratulations! Limotion server is now running.");
+}
+
+async function prepare()
+{
+    await setup();
+    await loadSensors();
+}
+
+async function setup()
+{
     setupLogger();
-    logger.info("Limotion server is now starting...");
-
-    server.setup();
-
+    setupServer();
     await setupStorage();
-
-    await setupSensors();
-    line(); logger.info("Congratulations! Limotion server is now running.");
 }
 
 function setupLogger()
@@ -34,8 +40,14 @@ function setupLogger()
     });
 }
 
+function setupServer()
+{
+    server.setup();
+}
+
 async function setupStorage()
 {
+    let storage = null;
     try
     {
         storage = require("./lib/storage");
@@ -57,55 +69,12 @@ async function setupStorage()
     }
 }
 
-async function setupSensors()
+async function loadSensors()
 {
-    logger.info("Loading sensors...");
-    let s = null;
-    for (let i = 0; i < sensors.length; i++)
-    {
-        s = sensors[i];
-        logger.info(`- [${s.name}]`);
-        let sensor = null;
-        try
-        {
-            if (s.monitor.mode === "http-server-pull")
-            {
-                sensor = new HttpServerPullSensor(s);
-            }
-            else if (s.monitor.mode === "http-client-push")
-            {
-                sensor = new HttpClientPushSensor(s);
-            }
-            else
-            {
-                throw new Error(`"${s.monitor.mode}" is not a supported sensor monitor mode. Try "http-server-pull" or "http-client-push".`);
-            }
-        }
-        catch (err)
-        {
-            logger.error(err);
-            throw new Error(`Error ocurs when create sensor "${s.name}".`);
-        }
-
-        const sensorStorage = new storage.SensorStorage(storage.connection);
-        try
-        {
-            await sensorStorage.bind(sensor);
-        }
-        catch (err)
-        {
-            logger.error(err);
-            throw new Error(`Error ocurs when binding SensorStorage to sensor "${s.name}".`);
-        }
-
-        if (sensor.startMonitor)
-        {
-            sensor.startMonitor();
-        }
-    }
+    await sensors.load();
 }
 
-function line()
+function printStarLine()
 {
     console.log("*".repeat(80));
 }
