@@ -27,5 +27,15 @@
     "mongodb": "^2.2.9",
     "request-promise": "^4.1.1",
     "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^6.2.5",
+    "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.6.1"
   }
 }

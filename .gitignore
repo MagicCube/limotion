@@ -30,6 +30,9 @@ build/Release
 node_modules
 jspm_packages
 
+# Client assets
+public/assets
+
 # Optional npm cache directory
 .npm
 
