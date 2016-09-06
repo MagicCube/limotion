@@ -2,9 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Monitor - Temperature and Humidity</title>
+    <link rel="stylesheet" href="vendors/c3/c3.min.css">
+    <script src="vendors/jquery/jquery.min.js"></script>
+    <script src="vendors/d3/d3.min.js" ></script>
+    <script src="vendors/c3/c3.min.js" charset="utf-8"></script>
 </head>
 <body>
-<h1>Hello, world!</h1>
+<div id="chart"></div>
+<script>
+var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+        x: "Timestamp",
+        columns: [
+            ["Timestamp"],
+            ["Temperature"],
+            ["Humidity"]
+        ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+
+            }
+        }
+    },
+    subchart: {
+        show: true
+    }
+});
+
+
+const from = new Date("2016-09-06 10:00");
+const   to = new Date("2016-09-06 22:00");
+$.ajax({
+    url: "/api/sensor/dht11-living-room/data",
+    data: {
+        from: from.toJSON(),
+        to: to.toJSON()
+    }
+}).then(rawData => {
+    const data = {
+        x: "Timestamp",
+        columns: [
+            ["Timestamp"],
+            ["Temperature"],
+            ["Humidity"]
+        ]
+    };
+    rawData.forEach((row, i) => {
+        data.columns[0].push(new Date(from * 1 + i * 60 * 1000));
+        data.columns[1].push(row.temperature === Number.MIN_SAFE_INTEGER ? null : row.temperature);
+        data.columns[2].push(row.humidity === Number.MIN_SAFE_INTEGER ? null : row.humidity);
+    });
+    console.log(data);
+    chart.load(data);
+});
+</script>
+
 </body>
 </html>
