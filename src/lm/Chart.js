@@ -21,17 +21,15 @@ export default class Chart
                 },
                 y: {
                     label: "Temperature",
-                    min: 0,
-                    max: 100,
-                    default: [ 0, 100 ],
+                    min: 20,
+                    max: 40,
                     padding: 0
                 },
                 y2: {
                     label: "Humidity %",
                     show: true,
                     min: 0,
-                    max: 100,
-                    default: [ 0, 100 ],
+                    max: 75,
                     padding: 0,
                 }
             },

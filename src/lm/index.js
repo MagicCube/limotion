@@ -1,7 +1,8 @@
 import Chart from "./Chart";
 
-const from = new Date(Date.parse("2016-09-06T02:00"));
-const   to = new Date(Date.parse("2016-09-07T02:00"));
+const now = new Date();
+const from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const   to = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
 
 const chart = new Chart(document.getElementById("chart"));
 loadData(from, to);
